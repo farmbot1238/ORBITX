@@ -95,7 +95,6 @@ class SupabaseAPI {
     // حظر مستخدم
     async banUser(userEmail, reason) {
         try {
-            // أولاً نجيب الـ ID
             const users = await this.getUsers();
             const user = users.find(u => u.email === userEmail);
             
