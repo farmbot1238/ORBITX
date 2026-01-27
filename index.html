@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 ORBITX - محطات الدراسة الفضائية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #0a0a2a;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* النجوم */
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* الهيدر */
+        header {
+            background: rgba(10, 10, 42, 0.9);
+            padding: 20px 40px;
+            border-bottom: 1px solid #4a1a8a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #8a2be2, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* الصفحة الرئيسية */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00c6ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        
+        /* الأزرار */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #8a2be2, #4a1a8a);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #8a2be2;
+            color: #8a2be2;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        /* القواعد */
+        .rules {
+            background: rgba(26, 26, 74, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            border: 1px solid #4a1a8a;
+        }
+        
+        .rules h2 {
+            color: #00c6ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .rules ul {
+            list-style: none;
+        }
+        
+        .rules li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* الفوتر */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid #4a1a8a;
+            color: #888;
+        }
+        
+        .creators {
+            color: #8a2be2;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+        
+        /* تسجيل الدخول */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-box {
+            background: #1a1a4a;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid #8a2be2;
+        }
+        
+        .login-box h2 {
+            color: #8a2be2;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #0a0a2a;
+            border: 1px solid #4a1a8a;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        /* المحطات */
+        .stations-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .station-card {
+            background: rgba(26, 26, 74, 0.7);
+            border: 1px solid #4a1a8a;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        
+        .station-card:hover {
+            transform: translateY(-5px);
+            border-color: #8a2be2;
+            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.3);
+        }
+        
+        .station-title {
+            font-size: 22px;
+            color: #00c6ff;
+            margin-bottom: 10px;
+        }
+        
+        /* الدردشة */
+        .chat-container {
+            background: rgba(10, 10, 42, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .message {
+            background: rgba(138, 43, 226, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-right: 3px solid #8a2be2;
+        }
+        
+        /* تايمر */
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff5555;
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 85, 85, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        /* متجاوب */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .stations-container { grid-template-columns: 1fr; padding: 20px; }
+            header { flex-direction: column; text-align: center; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- النجوم -->
+    <div id="stars"></div>
+    
+    <!-- الهيدر -->
+    <header>
+        <div class="logo">🚀 ORBITX</div>
+        <div>
+            <button class="btn btn-secondary" onclick="showLogin()">تسجيل الدخول</button>
+            <button class="btn btn-primary" onclick="showStations()">المحطات النشطة</button>
+        </div>
+    </header>
+    
+    <!-- الصفحة الرئيسية -->
+    <main id="mainContent">
+        <section class="hero">
+            <h1>انطلق في رحلة الدراسة الفضائية</h1>
+            <p>
+                ORBITX هو منصة دراسة جماعية تفاعلية. انضم إلى محطات الدراسة المتخصصة، 
+                تواصل مع زملائك في بيئة محفزة، وارفع من إنتاجيتك بنظام ذكي يحاسب على التركيز.
+            </p>
+            <div>
+                <button class="btn btn-primary" onclick="showStations()">
+                    🛰️ تصفح المحطات
+                </button>
+                <button class="btn btn-secondary" onclick="showLogin()">
+                    🔐 إنشاء حساب
+                </button>
+            </div>
+        </section>
+        
+        <!-- القواعد -->
+        <section class="rules">
+            <h2>📜 قواعد المحطة الفضائية</h2>
+            <ul>
+                <li>✅ كل محطة تستوعب 25 شخص فقط</li>
+                <li>✅ يمكنك الانضمام لمحطة واحدة فقط في كل وقت</li>
+                <li>✅ وقت المحطة يتناقص ويحذف تلقائياً عند الانتهاء</li>
+                <li>✅ الدردشة: رسالة واحدة كل دقيقتين</li>
+                <li>✅ التركيز على رابط الدراسة أو تخسر نقاط الطاقة</li>
+                <li>✅ صوت النيزك عند فتح رابط جو أكاديمي</li>
+            </ul>
+        </section>
+        
+        <!-- المطورين -->
+        <footer>
+            <p>© 2024 ORBITX - جميع الحقوق محفوظة</p>
+            <div class="creators">
+                <p>فكرة: عبدالرحمن نبيل | تطوير: عبدالرحمن المعايطه</p>
+            </div>
+        </footer>
+    </main>
+    
+    <!-- قسم المحطات (مخفي أولاً) -->
+    <div id="stationsPage" style="display: none; padding: 40px 20px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="color: #8a2be2; margin-bottom: 20px;">🛸 المحطات النشطة</h1>
+            <p style="color: #aaa; margin-bottom: 30px;">اختر محطة للانضمام أو أنشئ محطة جديدة</p>
+            <button class="btn btn-primary" onclick="showCreateStation()">
+                🚀 إنشاء محطة جديدة
+            </button>
+            <button class="btn btn-secondary" onclick="showHome()">
+                ← العودة للرئيسية
+            </button>
+        </div>
+        
+        <div class="stations-container" id="stationsList">
+            <!-- المحطات تظهر هنا -->
+        </div>
+    </div>
+    
+    <!-- نافذة تسجيل الدخول -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-box">
+            <h2>🔐 تسجيل الدخول / إنشاء حساب</h2>
+            <input type="email" id="loginEmail" class="login-input" placeholder="البريد الإلكتروني">
+            <input type="password" id="loginPassword" class="login-input" placeholder="كلمة المرور">
+            <button class="btn btn-primary" style="width: 100%;" onclick="loginUser()">
+                دخول / تسجيل
+            </button>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeLogin()">
+                إلغاء
+            </button>
+            <p id="loginMessage" style="text-align: center; margin-top: 15px; color: #ff5555;"></p>
+        </div>
+    </div>
+    
+    <!-- نافذة إنشاء محطة -->
+    <div id="createStationModal" class="login-modal" style="display: none;">
+        <div class="login-box">
+            <h2>🚀 إنشاء محطة جديدة</h2>
+            <input type="text" id="stationTitle" class="login-input" placeholder="اسم المحطة">
+            <input type="text" id="stationLink" class="login-input" placeholder="رابط الدراسة (اختياري)">
+            <input type="number" id="stationDuration" class="login-input" placeholder="المدة بالدقائق" value="60">
+            <textarea id="stationDesc" class="login-input" placeholder="وصف المحطة" rows="3"></textarea>
+            <button class="btn btn-primary" style="width: 100%;" onclick="createNewStation()">
+                🛰️ إنشاء المحطة
+            </button>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeCreateStation()">
+                إلغاء
+            </button>
+        </div>
+    </div>
+    
+    <!-- غرفة المحطة (مخفية) -->
+    <div id="stationRoom" style="display: none; padding: 20px; max-width: 800px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1 id="roomTitle" style="color: #00c6ff;"></h1>
+            <button class="btn btn-secondary" onclick="leaveStation()">← مغادرة المحطة</button>
+        </div>
+        
+        <!-- تايمر -->
+        <div class="timer" id="roomTimer">⏳ 60:00</div>
+        
+        <!-- الدردشة -->
+        <div class="chat-container">
+            <div id="chatMessages" style="height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                <!-- الرسائل تظهر هنا -->
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chatInput" placeholder="اكتب رسالتك..." 
+                       style="flex: 1; padding: 12px; background: #0a0a2a; border: 1px solid #4a1a8a; color: white; border-radius: 8px;">
+                <button class="btn btn-primary" onclick="sendMessage()" id="sendBtn">إرسال</button>
+            </div>
+            <p id="chatCooldown" style="color: #ff5555; text-align: center; margin-top: 10px; font-size: 14px;"></p>
+        </div>
+    </div>
+
+    <script>
+        // =================== البيانات ===================
+        let currentUser = null;
+        let stations = [
+            {
+                id: 1,
+                title: "محطة الرياضيات المتقدمة",
+                desc: "مراجعة التفاضل والتكامل",
+                participants: 12,
+                max: 25,
+                duration: 60,
+                link: "https://joacademy.com",
+                owner: "طالب فضائي"
+            },
+            {
+                id: 2,
+                title: "محطة برمجة بايثون",
+                desc: "مشاريع تطبيقية للمبتدئين",
+                participants: 18,
+                max: 25,
+                duration: 45,
+                link: "",
+                owner: "مطور ويب"
+            }
+        ];
+        
+        let currentStation = null;
+        let messageCooldown = false;
+        
+        // =================== النجوم ===================
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = Math.random() * 3 + 2 + 's';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // =================== الصفحات ===================
+        function showHome() {
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('stationsPage').style.display = 'none';
+            document.getElementById('stationRoom').style.display = 'none';
+        }
+        
+        function showStations() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('stationsPage').style.display = 'block';
+            document.getElementById('stationRoom').style.display = 'none';
+            displayStations();
+        }
+        
+        // =================== تسجيل الدخول ===================
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        
+        function closeLogin() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        
+        function loginUser() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                document.getElementById('loginMessage').textContent = 'الرجاء ملء جميع الحقول';
+                return;
+            }
+            
+            currentUser = {
+                email: email,
+                name: email.split('@')[0],
+                level: 1
+            };
+            
+            localStorage.setItem('orbitx_user', JSON.stringify(currentUser));
+            
+            document.getElementById('loginMessage').textContent = '✅ تم تسجيل الدخول بنجاح!';
+            document.getElementById('loginMessage').style.color = '#00ff00';
+            
+            setTimeout(() => {
+                closeLogin();
+                showStations();
+            }, 1000);
+        }
+        
+        // =================== عرض المحطات ===================
+        function displayStations() {
+            const container = document.getElementById('stationsList');
+            container.innerHTML = '';
+            
+            stations.forEach(station => {
+                const card = document.createElement('div');
+                card.className = 'station-card';
+                card.innerHTML = `
+                    <h3 class="station-title">${station.title}</h3>
+                    <p style="color: #ccc; margin: 10px 0;">${station.desc}</p>
+                    <div style="display: flex; justify-content: space-between; margin: 15px 0;">
+                        <span>👤 ${station.owner}</span>
+                        <span>👥 ${station.participants}/${station.max}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin: 15px 0;">
+                        <span>⏳ ${station.duration} دقيقة</span>
+                        <span>${station.link ? '🔗' : '📝'}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="joinStation(${station.id})">
+                        انضم للمحطة
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // =================== إنشاء محطة ===================
+        function showCreateStation() {
+            document.getElementById('createStationModal').style.display = 'flex';
+        }
+        
+        function closeCreateStation() {
+            document.getElementById('createStationModal').style.display = 'none';
+        }
+        
+        function createNewStation() {
+            const title = document.getElementById('stationTitle').value;
+            const link = document.getElementById('stationLink').value;
+            const duration = document.getElementById('stationDuration').value;
+            const desc = document.getElementById('stationDesc').value;
+            
+            if (!title || !duration) {
+                alert('الرجاء إدخال اسم المحطة والمدة');
+                return;
+            }
+            
+            const newStation = {
+                id: stations.length + 1,
+                title: title,
+                desc: desc || 'لا يوجد وصف',
+                participants: 0,
+                max: 25,
+                duration: parseInt(duration),
+                link: link,
+                owner: currentUser.name
+            };
+            
+            stations.unshift(newStation);
+            
+            alert(`تم إنشاء محطة "${title}" بنجاح!`);
+            closeCreateStation();
+            displayStations();
+        }
+        
+        // =================== الانضمام لمحطة ===================
+        function joinStation(stationId) {
+            const station = stations.find(s => s.id === stationId);
+            
+            if (!station) return;
+            
+            if (station.participants >= station.max) {
+                alert('المحطة ممتلئة!');
+                return;
+            }
+            
+            station.participants++;
+            currentStation = station;
+            
+            // تأثير النيزك إذا كان فيه رابط جو أكاديمي
+            if (station.link.includes('joacademy')) {
+                createMeteorEffect();
+            }
+            
+            // دخول لغرفة المحطة
+            document.getElementById('stationsPage').style.display = 'none';
+            document.getElementById('stationRoom').style.display = 'block';
+            document.getElementById('roomTitle').textContent = station.title;
+            
+            // بدء التايمر
+            startTimer(station.duration * 60);
+            
+            // إضافة رسالة ترحيب
+            addMessageToChat('🤖 نظام:', `مرحباً ${currentUser.name}! انضممت للمحطة.`);
+        }
+        
+        // =================== التايمر ===================
+        function startTimer(totalSeconds) {
+            const timerElement = document.getElementById('roomTimer');
+            let timeLeft = totalSeconds;
+            
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerElement.innerHTML = '⏰ انتهى وقت المحطة!';
+                    timerElement.style.background = '#ff5555';
+                    
+                    // تشغيل صوت الزمور
+                    playAlertSound();
+                    
+                    setTimeout(() => {
+                        alert('تم حذف المحطة تلقائياً');
+                        leaveStation();
+                    }, 3000);
+                    
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                timerElement.innerHTML = `⏳ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // =================== الدردشة ===================
+        function addMessageToChat(sender, text) {
+            const chat = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.innerHTML = `<strong>${sender}</strong>: ${text}`;
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        function sendMessage() {
+            if (!currentUser || !currentStation) return;
+            
+            if (messageCooldown) {
+                document.getElementById('chatCooldown').textContent = '⏳ الرجاء الانتظار دقيقتين بين الرسائل';
+                return;
+            }
+            
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessageToChat(currentUser.name, message);
+            input.value = '';
+            
+            // تفعيل التبريد
+            messageCooldown = true;
+            document.getElementById('sendBtn').disabled = true;
+            document.getElementById('chatCooldown').textContent = '⏳ يمكنك الإرسال مرة أخرى بعد دقيقتين';
+            
+            setTimeout(() => {
+                messageCooldown = false;
+                document.getElementById('sendBtn').disabled = false;
+                document.getElementById('chatCooldown').textContent = '';
+            }, 120000); // دقيقتين
+        }
+        
+        // =================== تأثيرات ===================
+        function createMeteorEffect() {
+            const meteor = document.createElement('div');
+            meteor.style.cssText = `
+                position: fixed;
+                top: -50px;
+                left: -50px;
+                width: 200px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #ff5555, #ffaa00, transparent);
+                transform: rotate(-45deg);
+                z-index: 9999;
+                pointer-events: none;
+                animation: meteorFall 2s linear forwards;
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes meteorFall {
+                    0% { transform: translateX(-100px) translateY(-100px) rotate(-45deg); opacity: 1; }
+                    100% { transform: translateX(100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(meteor);
+            setTimeout(() => meteor.remove(), 2000);
+        }
+        
+        function playAlertSound() {
+            // يمكنك إضافة صوت هنا
+            console.log('🔔 صوت الانتهاء');
+        }
+        
+        // =================== مغادرة المحطة ===================
+        function leaveStation() {
+            if (currentStation) {
+                currentStation.participants--;
+                currentStation = null;
+            }
+            
+            showStations();
+        }
+        
+        // =================== عند التحميل ===================
+        window.onload = function() {
+            createStars();
+            
+            // تحقق من تسجيل سابق
+            const savedUser = localStorage.getItem('orbitx_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+            
+            // تفعيل الإدخال بالإنتر
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') loginUser();
+            });
+        };
+    </script>
+</body>
+</html>
